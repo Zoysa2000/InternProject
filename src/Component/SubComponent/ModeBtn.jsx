@@ -36,9 +36,6 @@ const ModeBtn = () => {
 
                 <label htmlFor="dark-mode-toggle" className="text-slate-600 text-sm cursor-pointer select-none dark:text-white">
                     <div>
-                        <p className="font-medium">
-                            Change Your Mode
-                        </p>
                         <p className="text-slate-500 dark:text-white">
                             Toggle between light and dark theme.
                         </p>

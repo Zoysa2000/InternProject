@@ -20,7 +20,7 @@ const UserRegister = () => {
                                 className="mx-auto mb-4 w-25 h-20"
                             />
                             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                                Create User an Account
+                                Create User  Account
                             </h1>
                         </div>
 

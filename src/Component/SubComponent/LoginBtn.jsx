@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
 import { IoMdLogIn } from "react-icons/io";
+import {useNavigate} from "react-router-dom";
 
 const LoginBtn = () => {
     const [bgColor, setBgColor] = useState('#16056B');
+    const navigate = useNavigate()
+
+    const handleLogin =() =>
+    {
+    navigate("/userpanel")
+    }
+
 
     return (
-        <button
+        <button onClick={handleLogin}
             type="submit"
             style={{ backgroundColor: bgColor }}
             className="w-full text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-colors duration-300 flex items-center justify-center gap-2"
