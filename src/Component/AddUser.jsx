@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { UserCircleIcon } from '@heroicons/react/24/solid';
-
+import { IoMdPersonAdd } from "react-icons/io";
 export default function AddUser() {
     const [imagePreview, setImagePreview] = useState(null);
 
@@ -14,9 +14,10 @@ export default function AddUser() {
         <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
             <form
                 className="w-full max-w-4xl bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl border border-gray-300 dark:border-gray-700">
-                <h1 className="text-2xl font-bold text-center mb-3 text-gray-900 dark:text-white">
-                    Employee Information
+                <h1 className="text-3xl font-bold text-center mb-3 text-gray-900 dark:text-white">
+                    Employee Details
                 </h1>
+
                 {/* Profile Picture */}
                 <div className="flex items-center space-x-4 mb-6">
                     <div className="shrink-0">
@@ -132,10 +133,14 @@ export default function AddUser() {
                 </div>
 
                 {/* Submit Button */}
-                <button type="submit"
-                        className="text-white bg-[#16056B] hover:bg-[#10034d] font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                <button
+                    type="submit"
+                    className="flex items-center gap-x-2 text-white bg-[#16056B] hover:bg-[#10034d] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                >
+                    <IoMdPersonAdd/>
                     Add Employee
                 </button>
+
             </form>
         </div>
     );

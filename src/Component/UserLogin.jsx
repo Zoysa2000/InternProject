@@ -1,18 +1,63 @@
-import React from 'react';
-import RegisterBtn from "./SubComponent/RegisterBtn";
-import ModeBtn from "./SubComponent/ModeBtn";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import LoginBtn from "./SubComponent/LoginBtn";
+import ModeBtn from "./SubComponent/ModeBtn";
 
-const UserLogin= () => {
+const UserLogin = () => {
+    const navigate = useNavigate();
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [acceptTerms, setAcceptTerms] = useState(false);
+    const [message, setMessage] = useState("");
+    const [messageType, setMessageType] = useState("");
+
+    // We define handleSubmit here, but do NOT put on form onSubmit
+    // Instead, call it explicitly on LoginBtn click
+    const handleSubmit = async (e) => {
+        // e might be undefined when called directly, so:
+        if (e && e.preventDefault) e.preventDefault();
+
+        setMessage("");
+        setMessageType("");
+
+        if (!acceptTerms) {
+            setMessage("You must accept the terms.");
+            setMessageType("error");
+            return;
+        }
+
+        try {
+            const response = await fetch("https://localhost:7068/api/UserLogin/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, password }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                setMessage(data.message || "Login successful!");
+                setMessageType("success");
+                setTimeout(() => navigate("/userpanel"), 5000);
+            } else {
+                setMessage(data.message || "Login failed. Check your credentials.");
+                setMessageType("error");
+            }
+        } catch (err) {
+            setMessage("Server error: " + err.message);
+            setMessageType("error");
+        }
+    };
+
     return (
         <section className="bg-gray-50 dark:bg-gray-900 h-screen">
-            {/* Dark mode toggle button */}
             <ModeBtn />
-            {/* Centered form wrapper */}
             <div className="flex items-center justify-center h-full px-4">
-                <div className="w-full bg-white rounded-lg shadow dark:border sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+                <div className="w-full bg-white rounded-lg shadow-xl dark:border sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                     <div className="p-6 space-y-4 sm:p-8">
-                        {/* Logo and Heading */}
                         <div className="text-center">
                             <img
                                 src="./logo.png"
@@ -20,13 +65,29 @@ const UserLogin= () => {
                                 className="mx-auto mb-4 w-25 h-20"
                             />
                             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                                Login to Management Systems (Pvt) Ltd
+                                Login to TaskMate Systems (Pvt) Ltd
                             </h1>
+
+                            {message && (
+                                <div
+                                    className={`mt-4 p-3 rounded border text-center text-sm ${
+                                        messageType === "success"
+                                            ? "border-green-500 text-green-700 bg-green-100 dark:bg-green-800 dark:text-green-200"
+                                            : "border-red-500 text-red-700 bg-red-100 dark:bg-red-800 dark:text-red-200"
+                                    }`}
+                                >
+                                    {message}
+                                </div>
+                            )}
                         </div>
 
-                        <form className="space-y-4" action="#">
+                        {/* Note: no onSubmit on form */}
+                        <form className="space-y-4">
                             <div>
-                                <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                <label
+                                    htmlFor="email"
+                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                >
                                     Your email
                                 </label>
                                 <input
@@ -34,14 +95,19 @@ const UserLogin= () => {
                                     id="email"
                                     placeholder="name@company.com"
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
-                                               focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5
-                                               dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                             focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5
+                             dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                     required
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
                             </div>
 
                             <div>
-                                <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                <label
+                                    htmlFor="password"
+                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                >
                                     Password
                                 </label>
                                 <input
@@ -49,40 +115,45 @@ const UserLogin= () => {
                                     id="password"
                                     placeholder="••••••••"
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
-                                               focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5
-                                               dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                             focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5
+                             dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                     required
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                 />
                             </div>
+
                             <div className="flex items-start">
                                 <div className="flex items-center h-5">
                                     <input
                                         id="terms"
                                         type="checkbox"
                                         className="w-4 h-4 border border-gray-300 rounded bg-gray-50
-                                                   focus:ring-3 focus:ring-blue-300 dark:bg-gray-700
-                                                   dark:border-gray-600 dark:focus:ring-blue-600"
+                               focus:ring-3 focus:ring-blue-300 dark:bg-gray-700
+                               dark:border-gray-600 dark:focus:ring-blue-600"
+                                        checked={acceptTerms}
+                                        onChange={(e) => setAcceptTerms(e.target.checked)}
                                         required
                                     />
                                 </div>
                                 <div className="ml-3 text-sm">
-                                    <label htmlFor="terms" className="font-light text-gray-500 dark:text-gray-300">
+                                    <label
+                                        htmlFor="terms"
+                                        className="font-light text-gray-500 dark:text-gray-300"
+                                    >
                                         I accept the{" "}
-                                        <a href="#" className="font-medium text-blue-600 hover:underline dark:text-blue-500">
+                                        <a
+                                            href="#"
+                                            className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+                                        >
                                             Terms and Conditions
                                         </a>
                                     </label>
                                 </div>
                             </div>
 
-                            <LoginBtn />
-
-                            <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                                Already have not an account?{" "}
-                                <a href="/" className="font-medium text-blue-600 hover:underline dark:text-blue-500">
-                                    Register here
-                                </a>
-                            </p>
+                            {/* Pass the handler explicitly */}
+                            <LoginBtn onClick={handleSubmit} />
                         </form>
                     </div>
                 </div>
@@ -92,3 +163,4 @@ const UserLogin= () => {
 };
 
 export default UserLogin;
+
