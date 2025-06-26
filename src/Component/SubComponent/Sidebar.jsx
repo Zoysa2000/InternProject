@@ -17,15 +17,17 @@ const Sidebar = ({ onSelectView }) => {
                 <div className="h-full px-3 py-4 overflow-y-auto bg-gray-200 dark:bg-gray-800">
                     <img
                         src="logo.png"
-                        className="h-10 me-3 sm:h-10"
+                        style={{height:"100px"}}
+                        className=" me-3 w-full"
                         alt="Flowbite Logo"
                     />
-                    <ul className="space-y-2 font-medium">
+                    <ul className="space-y-5 font-medium">
                         <li>
                             <button
                                 type="button"
                                 onClick={() => setIsEcommerceOpen(!isEcommerceOpen)}
-                                className="flex items-center w-full p-2 mt-5 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-400 dark:text-white dark:hover:bg-gray-900"
+
+                                className="flex items-center w-full p-2 mt-5 text-base  text-gray-900 transition duration-75 rounded-lg group bg-gray-400  dark:hover:bg-gray-700"
                             >
                                 <MdManageAccounts className="h-7 w-7"/>
                                 <span className="flex-1 ms-3 text-left whitespace-nowrap">Manage Users</span>
@@ -52,7 +54,7 @@ const Sidebar = ({ onSelectView }) => {
                                             e.preventDefault();
                                             onSelectView('addUser'); // 🔥 This sets view in parent
                                         }}
-                                        className="flex items-center w-full p-2 pl-11 text-gray-900 hover:bg-gray-400 dark:text-white"
+                                        className="flex items-center w-full p-2 pl-11 text-gray-900 bg-gray-300 "
                                     >
                                         <IoIosPersonAdd className="w-5 h-5 me-2"/>
                                         Add User
@@ -65,7 +67,7 @@ const Sidebar = ({ onSelectView }) => {
                                             e.preventDefault();
                                             onSelectView('updateUser'); // 🔥 This sets view in parent
                                         }}
-                                        className="flex items-center w-full p-2 pl-11 text-gray-900 hover:bg-gray-400 dark:text-white"
+                                        className="flex items-center w-full p-2 pl-11 text-gray-900 bg-gray-300 "
                                     >
                                         <MdUpdate className="w-5 h-5 me-2"/>
                                         Update User Details
@@ -78,7 +80,7 @@ const Sidebar = ({ onSelectView }) => {
                                             e.preventDefault();
                                             onSelectView('deleteUser'); // 🔥 This sets view in parent
                                         }}
-                                        className="flex items-center w-full p-2 pl-11 text-gray-900 hover:bg-gray-400 dark:text-white"
+                                        className="flex items-center w-full p-2 pl-11 text-gray-900 bg-gray-300 "
                                     >
                                         <MdAutoDelete className="w-5 h-5 me-2"/>
                                         Delete User
@@ -89,9 +91,9 @@ const Sidebar = ({ onSelectView }) => {
 
                         <li>
                             <a href="#"
-                               className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-400 dark:hover:bg-gray-700 group">
+                               className="flex items-center p-2 text-gray-900 rounded-lg  bg-gray-400 dark:hover:bg-gray-700 group">
                                 <svg
-                                    className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                    className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 text-gray-900 "
                                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                     viewBox="0 0 18 18">
                                 <path
@@ -104,9 +106,9 @@ const Sidebar = ({ onSelectView }) => {
                         </li>
                         <li>
                             <a href="#"
-                               className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-400 dark:hover:bg-gray-700 group">
+                               className="flex items-center p-2 text-gray-900 rounded-lg  bg-gray-400 dark:hover:bg-gray-700 group">
                                 <svg
-                                    className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                    className="shrink-0 w-5 h-5 text-gray-500 transition duration-75  text-gray-900 "
                                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                     viewBox="0 0 20 20">
                                     <path
@@ -119,9 +121,9 @@ const Sidebar = ({ onSelectView }) => {
                         </li>
                         <li>
                             <a href="#"
-                               className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-400 dark:hover:bg-gray-700 group">
+                               className="flex items-center p-2 text-gray-900 rounded-lg  bg-gray-400 dark:hover:bg-gray-700 group">
                                 <svg
-                                    className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                    className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 text-gray-900 d"
                                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                     viewBox="0 0 20 18">
                                     <path
@@ -132,9 +134,9 @@ const Sidebar = ({ onSelectView }) => {
                         </li>
                         <li>
                             <a href="#"
-                               className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-400 dark:hover:bg-gray-700 group">
+                               className="flex items-center p-2 text-gray-900 rounded-lg  bg-gray-400 dark:hover:bg-gray-700 group">
                                 <svg
-                                    className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                    className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 text-gray-900 "
                                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                     viewBox="0 0 18 20">
                                     <path
@@ -145,9 +147,9 @@ const Sidebar = ({ onSelectView }) => {
                         </li>
                         <li>
                             <a href="#"
-                               className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-400 dark:hover:bg-gray-700 group">
+                               className="flex items-center p-2 text-gray-900 rounded-lg  bg-gray-400 dark:hover:bg-gray-700 group">
                                 <svg
-                                    className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                    className="shrink-0 w-5 h-5 text-gray-500 transition duration-75  text-gray-900 "
                                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                                     viewBox="0 0 18 16">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -159,9 +161,9 @@ const Sidebar = ({ onSelectView }) => {
                         </li>
                         <li>
                             <a href="#"
-                               className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-400 dark:hover:bg-gray-700 group">
+                               className="flex items-center p-2 text-gray-900 rounded-lg  bg-gray-400 dark:hover:bg-gray-700 group">
                                 <svg
-                                    className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                    className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 text-gray-900 "
                                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                     viewBox="0 0 20 20">
                                     <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z"/>
