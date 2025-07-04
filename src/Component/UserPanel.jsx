@@ -5,9 +5,10 @@ import UpdateUser from "./UpdateUser";
 import {useState} from "react";
 import DeleteUser from "./DeleteUser";
 import AddUser from "./AddUser";
+import Chart from "./Chart";
 const UserPanel = () => {
 
-    const [view, setView] = useState('userTable'); // 'userTable' or 'updateUser'
+    const [view, setView] = useState('chart'); // 'userTable' or 'updateUser'
     return (
         <div>
             <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar"
@@ -28,6 +29,7 @@ const UserPanel = () => {
                 {view === 'updateUser' && <UpdateUser/>}
                 {view === 'deleteUser' && <DeleteUser/>}
                 {view === 'addUser' && <AddUser/>}
+                {view === 'chart' && <Chart/>}
             </div>
 
         </div>

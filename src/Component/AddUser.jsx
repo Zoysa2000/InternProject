@@ -1,24 +1,140 @@
 import React, { useState } from 'react';
 import { UserCircleIcon } from '@heroicons/react/24/solid';
 import { IoMdPersonAdd } from "react-icons/io";
+
 export default function AddUser() {
+    const [imageFile, setImageFile] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
+    const [successMessage, setSuccessMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        department: '',
+        phone: '',
+        position: '',
+        age: '',
+        email: '',
+        dateOfJoin: '',
+        imageUrl: '',
+        termsAccepted: false
+    });
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            setImagePreview(URL.createObjectURL(file));
+            const imageUrl = URL.createObjectURL(file);
+            setImagePreview(imageUrl);
+            setImageFile(file);
         }
     };
+
+    const handleChange = (e) => {
+        const { id, value, type, checked } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [id]: type === 'checkbox' ? checked : value
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setSuccessMessage('');
+        setErrorMessage('');
+
+        if (!formData.termsAccepted) {
+            setErrorMessage("Please accept the terms and conditions.");
+            return;
+        }
+
+        if (!imageFile) {
+            setErrorMessage("Please upload an image.");
+            return;
+        }
+
+        try {
+            // 1. Upload image to backend
+            const formImage = new FormData();
+            formImage.append('image', imageFile);
+
+            const uploadRes = await fetch("https://localhost:7068/api/Employees/uploadImage", {
+                method: "POST",
+                body: formImage
+            });
+
+            let uploadData;
+            try {
+                uploadData = await uploadRes.json();
+            } catch {
+                const text = await uploadRes.text();
+                throw new Error(text || "Image upload failed");
+            }
+
+            if (!uploadRes.ok) {
+                throw new Error(uploadData.message || "Image upload failed");
+            }
+
+
+            const payload = {
+                ...formData,
+                age: Number(formData.age),
+                dateOfJoin: new Date(formData.dateOfJoin).toISOString(),
+                imageUrl: uploadData.imageUrl
+            };
+
+            const res = await fetch("https://localhost:7068/api/Employees/addEmployee", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) throw new Error(data.message || "Failed to save employee");
+
+            setSuccessMessage(data.message || "Employee added successfully.");
+            setFormData({
+                firstName: '',
+                lastName: '',
+                department: '',
+                phone: '',
+                position: '',
+                age: '',
+                email: '',
+                dateOfJoin: '',
+                imageUrl: '',
+                termsAccepted: false
+            });
+            setImageFile(null);
+            setImagePreview(null);
+        } catch (err) {
+            setErrorMessage(err.message);
+        }
+    };
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
             <form
-                className="w-full max-w-4xl bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl border border-gray-300 dark:border-gray-700">
-                <h1 className="text-3xl font-bold text-center mb-3 text-gray-900 dark:text-white">
-                    Employee Details
+                onSubmit={handleSubmit}
+                className="w-full max-w-4xl bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl border border-gray-300 dark:border-gray-700"
+            >
+                <h1 className="text-2xl font-bold text-center mb-3 text-gray-900 dark:text-white">
+                    Create Profile For New Employee
                 </h1>
 
-                {/* Profile Picture */}
+                {errorMessage && (
+                    <div className="mb-4 p-3 text-red-800 bg-red-100 border border-red-400 rounded">
+                        {errorMessage}
+                    </div>
+                )}
+                {successMessage && (
+                    <div className="mb-4 p-3 text-green-800 bg-green-100 border border-green-400 rounded">
+                        {successMessage}
+                    </div>
+                )}
+
+                {/* Image preview */}
                 <div className="flex items-center space-x-4 mb-6">
                     <div className="shrink-0">
                         {imagePreview ? (
@@ -28,7 +144,7 @@ export default function AddUser() {
                                 className="h-16 w-16 rounded-full object-cover border border-gray-400"
                             />
                         ) : (
-                            <UserCircleIcon className="h-16 w-16 text-gray-400 dark:text-gray-600"/>
+                            <UserCircleIcon className="h-16 w-16 text-gray-400 dark:text-gray-600" />
                         )}
                     </div>
                     <label className="block">
@@ -38,116 +154,94 @@ export default function AddUser() {
                             accept="image/*"
                             onChange={handleImageChange}
                             className="block w-full text-sm text-gray-500
-                                file:mr-4 file:py-2 file:px-4
-                                file:rounded-full file:border-0
-                                file:text-sm file:font-semibold
-                                file:bg-blue-50 file:text-blue-700
-                                hover:file:bg-blue-100"
+                            file:mr-4 file:py-2 file:px-4
+                            file:rounded-full file:border-0
+                            file:text-sm file:font-semibold
+                            file:bg-blue-50 file:text-blue-700
+                            hover:file:bg-blue-100"
                         />
                     </label>
                 </div>
 
-                {/* Form Fields */}
                 <div className="grid gap-6 mb-6 md:grid-cols-2">
-                    <div>
-                        <label htmlFor="first_name"
-                               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First
-                            name</label>
-                        <input type="text" id="first_name" placeholder="John" required className={inputStyle}/>
-                    </div>
-                    <div>
-                        <label htmlFor="last_name"
-                               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last
-                            name</label>
-                        <input type="text" id="last_name" placeholder="Doe" required className={inputStyle}/>
-                    </div>
-                    <div>
-                        <label
-                            htmlFor="department"
-                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >
-                            Department
-                        </label>
-                        <select
-                            id="department"
-                            required
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            defaultValue=""
-                        >
-                            <option value="" disabled>
-                                Select department
-                            </option>
-                            <option value="Engineering">IT</option>
-                            <option value="HR">HR</option>
-                            <option value="Sales">Sales</option>
-                            <option value="Marketing">Marketing</option>
-                            <option value="Finance">Finance</option>
-                            <option value="IT Suport">Marketing</option>
-                            <option value="Logistic">Logistic</option>
-                            {/* add more options as needed */}
-                        </select>
-                    </div>
-
-                    <div>
-                        <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone
-                            number</label>
-                        <input type="tel" id="phone" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
-                               required className={inputStyle}/>
-                    </div>
-                    <div>
-                        <label htmlFor="position"
-                               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Position</label>
-                        <input type="text" id="position" placeholder="Manager" required className={inputStyle}/>
-                    </div>
-                    <div>
-                        <label htmlFor="age"
-                               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Age</label>
-                        <input type="number" id="age" placeholder="30" required className={inputStyle}/>
-                    </div>
+                    <Input id="firstName" value={formData.firstName} onChange={handleChange} label="First Name" placeholder="John" required />
+                    <Input id="lastName" value={formData.lastName} onChange={handleChange} label="Last Name" placeholder="Doe" required />
+                    <Select id="department" value={formData.department} onChange={handleChange} label="Department" options={["", "IT", "HR", "Sales", "Finance", "Marketing"]} required />
+                    <Input id="phone" value={formData.phone} onChange={handleChange} label="Phone Number" placeholder="071xxxxxxx" required />
+                    <Input id="position" value={formData.position} onChange={handleChange} label="Position" placeholder="Software Engineer" required />
+                    <Input id="age" value={formData.age} onChange={handleChange} label="Age" type="number" required />
+                    <Input id="email" value={formData.email} onChange={handleChange} label="Email" type="email" required />
+                    <Input id="dateOfJoin" value={formData.dateOfJoin} onChange={handleChange} label="Date of Join" type="date" required />
                 </div>
 
-                {/* Email + DOB */}
-                <div className="grid gap-6 mb-6 md:grid-cols-2">
-                    <div>
-                        <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email
-                            address</label>
-                        <input type="email" id="email" placeholder="john.doe@example.com" required
-                               className={inputStyle}/>
-                    </div>
-                    <div>
-                        <label htmlFor="dob" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date
-                            of Join</label>
-                        <input type="date" id="dob" required className={inputStyle}/>
-                    </div>
-                </div>
-
-                {/* Checkbox */}
                 <div className="flex items-start mb-6">
                     <div className="flex items-center h-5">
-                        <input id="terms" type="checkbox" required
-                               className="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 dark:bg-gray-700 dark:border-gray-600 focus:ring-3 focus:ring-blue-300"/>
+                        <input
+                            id="termsAccepted"
+                            type="checkbox"
+                            checked={formData.termsAccepted}
+                            onChange={handleChange}
+                            className="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 dark:bg-gray-700 dark:border-gray-600 focus:ring-3 focus:ring-blue-300"
+                        />
                     </div>
-                    <label htmlFor="terms" className="ms-2 text-sm font-medium text-gray-900 dark:text-white">
+                    <label htmlFor="termsAccepted" className="ms-2 text-sm font-medium text-gray-900 dark:text-white">
                         I agree with the <a href="#" className="text-blue-600 hover:underline">terms and conditions</a>.
                     </label>
                 </div>
 
-                {/* Submit Button */}
                 <button
                     type="submit"
                     className="flex items-center gap-x-2 text-white bg-[#16056B] hover:bg-[#10034d] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 >
-                    <IoMdPersonAdd/>
+                    <IoMdPersonAdd />
                     Add Employee
                 </button>
-
             </form>
         </div>
     );
 }
 
-// Tailwind input styles with dark mode support
-const inputStyle = "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg \
-focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 \
-dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white \
-dark:focus:ring-blue-500 dark:focus:border-blue-500";
+function Input({ id, label, type = "text", value, onChange, placeholder, required }) {
+    return (
+        <div>
+            <label htmlFor={id} className={labelStyle}>{label}</label>
+            <input
+                type={type}
+                id={id}
+                value={value}
+                onChange={onChange}
+                placeholder={placeholder}
+                required={required}
+                className={inputStyle}
+            />
+        </div>
+    );
+}
+
+function Select({ id, label, value, onChange, options, required }) {
+    return (
+        <div>
+            <label htmlFor={id} className={labelStyle}>{label}</label>
+            <select
+                id={id}
+                value={value}
+                onChange={onChange}
+                required={required}
+                className={inputStyle}
+            >
+                {options.map((opt, i) => (
+                    <option key={i} value={opt} disabled={opt === ""}>
+                        {opt === "" ? "Select department" : opt}
+                    </option>
+                ))}
+            </select>
+        </div>
+    );
+}
+
+const inputStyle =
+    "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500";
+
+const labelStyle = "block mb-2 text-sm font-medium text-gray-900 dark:text-white";
+
+
