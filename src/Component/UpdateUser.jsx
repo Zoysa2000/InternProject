@@ -1,93 +1,87 @@
-import React from 'react';
+import React, { useState } from "react";
+import Searchbar from "./SubComponent/Searchbar";
+import Updateform from "./Updateform";
 
-const UpdateUser = () => {
+export default function UpdateUser() {
+    const [employees, setEmployees] = useState([]);
+    const [showUpdateModel, setshowUpdateModel] = useState(false);
+    const [selectedEmployee, setSelectedEmployee] = useState(null); // this holds empId
+    const [action, setAction]           = useState("");
+
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
-            <div className="">
-                <label htmlFor="table-search" className="sr-only">Search</label>
+            <Updateform
+                open={showUpdateModel}
+                onClose={() => setshowUpdateModel(false)}
+                employee={selectedEmployee}
+                action= {action}
+            />
 
-                {/* Flex Container for Search + Dropdown */}
-                <div className="flex flex-wrap items-center gap-4 mt-1">
-                    {/* Search Input */}
-                    <div className="relative">
-                        <div className="absolute inset-y-0 left-0 flex items-center ps-3 pointer-events-none">
-                            <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                            </svg>
-                        </div>
-                        <input
-                            type="text"
-                            id="table-search"
-                            className="block py-2 pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Search using ID"
-                        />
-                    </div>
+            <Searchbar onResults={setEmployees} />
 
-                    {/* Dropdown Filter */}
-                    <div>
-                        <select
-                            className="block w-48 py-2 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white dark:bg-gray-700 dark:text-white dark:border-gray-600 "
-                            defaultValue=""
-                        >
-                            <option value="Engineering">Engineering</option>
-                            <option value="HR">HR</option>
-                            <option value="Sales">Sales</option>
-                            <option value="Finance">Finance</option>
-                            <option value="IT Support">IT Support</option>
-                            <option value="Marketing">Marketing</option>
-                            <option value="Logistics">Logistics</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            {/* Table remains unchanged */}
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-5">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-300 dark-gray-700 dark:text-gray-700">
+            <table className="w-full text-sm text-left mt-5">
+                <thead className="text-xs uppercase bg-gray-300">
                 <tr>
-                    <th scope="col" className="p-4"></th>
-                    <th scope="col" className="px-6 py-3">Employee Name</th>
-                    <th scope="col" className="px-6 py-3">Employee ID</th>
-                    <th scope="col" className="px-6 py-3">Department</th>
-                    <th scope="col" className="px-6 py-3">Position</th>
-                    <th scope="col" className="px-6 py-3">More Details</th>
+                    <th className="p-4"></th>
+                    <th className="px-6 py-3">ID</th>
+                    <th className="px-6 py-3">Photo</th>
+                    <th className="px-6 py-3">Employee Name</th>
+                    <th className="px-6 py-3">Department</th>
+                    <th className="px-6 py-3">Position</th>
+                    <th className="px-6 py-3">Email</th>
+                    <th className="px-6 py-3">Date of Join</th>
+                    <th className="px-6 py-3">More Details</th>
                 </tr>
                 </thead>
+
                 <tbody>
-                {[
-                    {name: "Tharindu Perera", id: "EMP001", dept: "Engineering", detail: "Software Engineer"},
-                    {name: "Dilani Fernando", id: "EMP002", dept: "HR", detail: "HR Manager"},
-                    {name: "Ruwan Silva", id: "EMP003", dept: "Sales", detail: "Senior Sales Executive"},
-                    {name: "Nimesha Jayasuriya", id: "EMP004", dept: "Finance", detail: "Accountant"},
-                    {name: "Kasun Wijesinghe", id: "EMP005", dept: "IT Support", detail: "System Administrator"},
-                    {name: "Sajini Ratnayake", id: "EMP006", dept: "Marketing", detail: "Marketing Specialist"},
-                    {name: "Ishan Madushanka", id: "EMP007", dept: "Logistics", detail: "Logistics Coordinator"},
-                ].map((emp, i) => (
-                    <tr key={i}
-                        className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td className="w-4 p-4">
-                            <input type="checkbox"
-                                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600"/>
-                        </td>
-                        <th scope="row"
-                            className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{emp.name}</th>
-                        <td className="px-6 py-4">{emp.id}</td>
-                        <td className="px-6 py-4">{emp.dept}</td>
-                        <td className="px-6 py-4">{emp.detail}</td>
-                        <td className="px-6 py-4">
-                            <button style={{backgroundColor: "#008000"}}
-                                    className="text-white font-medium rounded-md text-sm px-4 py-1.5 transition">
-                               Update
-                            </button>
+                {employees.length === 0 ? (
+                    <tr>
+                        <td colSpan={9} className="text-center py-4">
+                            No data found
                         </td>
                     </tr>
-                ))}
+                ) : (
+                    employees.map((emp) => (
+                        <tr key={emp.empId} className="bg-white border-b hover:bg-gray-50">
+                            <td className="p-4">
+                                <input type="checkbox" className="w-4 h-4" />
+                            </td>
+                            <td className="px-6 py-4">{emp.empId}</td>
+                            <td className="px-6 py-4">
+                                <img
+                                    src={emp.imageUrl}
+                                    alt={emp.firstName}
+                                    className="w-10 h-10 rounded-full object-cover"
+                                />
+                            </td>
+                            <td className="px-6 py-4 ">
+                                {emp.firstName} {emp.lastName}
+                            </td>
+                            <td className="px-6 py-4">{emp.department}</td>
+                            <td className="px-6 py-4">{emp.position}</td>
+                            <td className="px-6 py-4">{emp.email}</td>
+                            <td className="px-6 py-4">
+                                {new Date(emp.dateOfJoin).toLocaleDateString()}
+                            </td>
+                            <td className="px-6 py-4">
+                                <button
+                                    className="bg-green-600 text-white rounded-md text-sm px-4 py-1.5"
+                                    onClick={() => {
+                                        setSelectedEmployee(emp.empId,);
+                                        setAction("update")// set empId to pass
+                                        setshowUpdateModel(true);
+                                    }}
+                                >
+                                    Update
+                                </button>
+                            </td>
+                        </tr>
+                    ))
+                )}
                 </tbody>
             </table>
         </div>
     );
-};
+}
 
-export default UpdateUser;

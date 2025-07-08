@@ -95,7 +95,7 @@ const UserRegister = () => {
                 <div className="w-full bg-white rounded-lg shadow-xl dark:border sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                     <div className="p-6 space-y-2 sm:p-8">
                         <div className="text-center">
-                            <img src="./logo.png" alt="Company Logo" className="mx-auto mb-2 w-25 h-20" />
+                            <img src="./logo.gif" alt="Company Logo" className="mx-auto mb-2 w-25 h-25" />
                             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                                 Create User Account
                             </h1>

@@ -6,14 +6,14 @@ const LoginBtn = ({ onClick }) => {
 
     return (
         <button
-            type="button" // not submit to prevent auto form submit
+            type="button" 
             onClick={onClick} // calls handleSubmit passed as prop
             style={{ backgroundColor: bgColor }}
             className="w-full text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-colors duration-300 flex items-center justify-center gap-2"
             onMouseEnter={() => setBgColor("#0f044a")}
             onMouseLeave={() => setBgColor("#16056B")}
         >
-            <IoMdLogIn className="text-lg h-6 w-6" />
+            <IoMdLogIn className="w-6 h-6 text-lg" />
             User Login
         </button>
     );
