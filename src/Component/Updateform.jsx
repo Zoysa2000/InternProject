@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
+import useDepartments from "./SubComponent/Department";
 
 const inputFieldClass =
     "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg " +
@@ -18,6 +19,9 @@ export default function Updateform({ open = true, onClose = () => {}, employee, 
         dateOfJoin: "",
         imageUrl: "",
     });
+
+        const { departments, loading: deptLoading, error: deptError } = useDepartments(); // custom hook
+    const activeDepartments = departments.filter(d => d.isActive);
 
     const [imageFile, setImageFile] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
@@ -51,7 +55,6 @@ export default function Updateform({ open = true, onClose = () => {}, employee, 
             .finally(() => setLoading(false));
     }, [open, employee]);
 
-    // ─────────────────────────────────── HANDLERS ───────────────────────────────────────
     const handleChange = (e) => {
         const { id, value } = e.target;
         setFormData((p) => ({ ...p, [id]: value }));
@@ -155,7 +158,7 @@ export default function Updateform({ open = true, onClose = () => {}, employee, 
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div className="relative p-5 w-full max-w-md max-h-full">
+            <div className="relative w-full max-w-md max-h-full p-5">
                 <div className="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
                     {/* Header */}
                     <div className="flex items-center justify-between p-4 border-b dark:border-gray-600">
@@ -169,12 +172,12 @@ export default function Updateform({ open = true, onClose = () => {}, employee, 
 
                     <form  className="p-4 space-y-6">
                         {error && (
-                            <div className="p-3 bg-red-100 text-red-700 border border-red-400 rounded">
+                            <div className="p-3 text-red-700 bg-red-100 border border-red-400 rounded">
                                 {error}
                             </div>
                         )}
                         {success && (
-                            <div className="p-3 bg-green-100 text-green-700 border border-green-400 rounded">
+                            <div className="p-3 text-green-700 bg-green-100 border border-green-400 rounded">
                                 {success}
                             </div>
                         )}
@@ -184,7 +187,7 @@ export default function Updateform({ open = true, onClose = () => {}, employee, 
                                 <img
                                     src={imagePreview}
                                     alt="Preview"
-                                    className="w-16 h-16 rounded-full object-cover border"
+                                    className="object-cover w-16 h-16 border rounded-full"
                                 />
                             ) : (
                                 <UserCircleIcon className="w-16 h-16 text-gray-400"/>
@@ -193,19 +196,29 @@ export default function Updateform({ open = true, onClose = () => {}, employee, 
                         </div>
 
                         {/* Grid of inputs */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                             <Input id="firstName" label="First Name" value={formData.firstName} onChange={handleChange}
                                    required/>
                             <Input id="lastName" label="Last Name" value={formData.lastName} onChange={handleChange}
                                    required/>
-                            <Select
-                                id="department"
-                                label="Department"
-                                value={formData.department}
-                                onChange={handleChange}
-                                options={["", "IT", "HR", "Sales", "Finance", "Marketing"]}
-                                required
-                            />
+                            <div>
+                        <label htmlFor="department" className={labelStyle}>Department</label>
+                        <select
+                            id="department"
+                            value={formData.department}
+                            onChange={handleChange}
+                            disabled={deptLoading || activeDepartments.length === 0}
+                            className={inputStyle}
+                            required
+                        >
+                            <option value="">Select Department</option>
+                            {activeDepartments.map((d) => (
+                                <option key={d.deptId} value={d.deptName}>
+                                    {d.deptName}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                             <Input id="phone" label="Phone" value={formData.phone} onChange={handleChange} required/>
                             <Input id="position" label="Position" value={formData.position} onChange={handleChange}
                                    required/>
@@ -288,3 +301,7 @@ function Select({ id, label, value, onChange, options, required }) {
         </div>
     );
 }
+const inputStyle =
+    "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500";
+
+const labelStyle = "block mb-2 text-sm font-medium text-gray-900 dark:text-white";

@@ -8,12 +8,14 @@ import {
 } from "react-icons/md";
 import { IoIosPersonAdd } from "react-icons/io";
 import { GrView } from "react-icons/gr";
+import { useMenu } from "./Menu";
 
 const Sidebar = ({ onSelectView }) => {
-    const [isOpen, setIsOpen] = useState(false);   // submenu open/close
-    const [showPopup, setShowPopup] = useState(false); // logout modal
+    const [isOpen, setIsOpen] = useState(false);  
+    const [showPopup, setShowPopup] = useState(false); 
     const navigate = useNavigate();
 
+const { menu} = useMenu(); // use the hook
 
     const handleSignOut = () => {
         setShowPopup(true);
@@ -22,14 +24,14 @@ const Sidebar = ({ onSelectView }) => {
 
     return (
         <>
-            {/* ---------- main sidebar ---------- */}
+          
             <aside
                 id="logo-sidebar"
                 className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
                 aria-label="Sidebar"
             >
                 <div className="h-full px-3 py-4 overflow-y-auto bg-gray-200 dark:bg-gray-800">
-                    {/* logo */}
+         
                     <img
                         src="logo.gif"
                         alt="Logo"
@@ -38,15 +40,15 @@ const Sidebar = ({ onSelectView }) => {
                     />
 
                     <ul className="space-y-5 font-medium">
-                        {/* ---------- Manage Employee ---------- */}
+                  
                         <li>
                             <button
                                 type="button"
                                 onClick={() => setIsOpen(!isOpen)}
-                                className="flex items-center w-full p-2 text-base text-gray-900 rounded-lg bg-gray-400 dark:hover:bg-gray-700 group"
+                                className="flex items-center w-full p-2 text-base text-gray-900 bg-gray-400 rounded-lg dark:hover:bg-gray-700 group"
                             >
                                 <MdManageAccounts className="w-7 h-7"/>
-                                <span className="flex-1 ms-3 text-left whitespace-nowrap">
+                                <span className="flex-1 text-left ms-3 whitespace-nowrap">
                   Manage Employee
                 </span>
                                 <svg
@@ -68,70 +70,42 @@ const Sidebar = ({ onSelectView }) => {
                             </button>
 
                             {/* submenu */}
-                            <ul className={`${isOpen ? "" : "hidden"} py-2 space-y-2`}>
-                                <li>
-                                    <a
-                                        href=""
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            onSelectView("userTable");
-                                        }}
-                                        className="flex items-center w-full p-2 pl-11 text-gray-900 rounded-lg bg-gray-300"
-                                    >
-                                        <GrView className="w-5 h-5 me-2"/>
-                                        View Employee
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href=""
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            onSelectView("addUser");
-                                        }}
-                                        className="flex items-center w-full p-2 pl-11 text-gray-900 rounded-lg bg-gray-300"
-                                    >
-                                        <IoIosPersonAdd className="w-5 h-5 me-2"/>
-                                        Add Employee
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href=""
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            onSelectView("updateUser");
-                                        }}
-                                        className="flex items-center w-full p-2 pl-11 text-gray-900 rounded-lg bg-gray-300"
-                                    >
-                                        <MdUpdate className="w-5 h-5 me-2"/>
-                                        Update Employee
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href=""
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            onSelectView("deleteUser");
-                                        }}
-                                        className="flex items-center w-full p-2 pl-11 text-gray-900 rounded-lg bg-gray-300"
-                                    >
-                                        <MdAutoDelete className="w-5 h-5 me-2"/>
-                                        Delete Employee
-                                    </a>
-                                </li>
-                            </ul>
+                      <ul className={`${isOpen ? "" : "hidden"} py-2 space-y-2`}>
+  {menu
+    .filter((item) => item.isActive)
+    .map((item) => (
+      <li key={item.id}>
+        <a
+          href="/"
+          onClick={(e) => {
+            e.preventDefault();
+            const action = item.actionName.toLowerCase();
+            if (action.includes("view")) onSelectView("userTable");
+            else if (action.includes("add")) onSelectView("addUser");
+            else if (action.includes("update")) onSelectView("updateUser");
+            else if (action.includes("delete")) onSelectView("deleteUser");
+          }}
+          className="flex items-center w-full p-2 text-gray-900 bg-gray-300 rounded-lg pl-11"
+        >
+          {item.actionName.includes("View") && <GrView className="w-5 h-5 me-2" />}
+          {item.actionName.includes("Add") && <IoIosPersonAdd className="w-5 h-5 me-2" />}
+          {item.actionName.includes("Update") && <MdUpdate className="w-5 h-5 me-2" />}
+          {item.actionName.includes("Delete") && <MdAutoDelete className="w-5 h-5 me-2" />}
+          {item.actionName}
+        </a>
+      </li>
+    ))}
+</ul>
                         </li>
 
                         <li>
                             <a
-                                href="#"
-                                className="flex items-center p-2 text-gray-900 rounded-lg bg-gray-400 dark:hover:bg-gray-700 group"
+                                href="/"
+                                className="flex items-center p-2 text-gray-900 bg-gray-400 rounded-lg dark:hover:bg-gray-700 group"
                             >
                                 {/* Kanban icon */}
                                 <svg
-                                    className="shrink-0 w-5 h-5 text-gray-900"
+                                    className="w-5 h-5 text-gray-900 shrink-0"
                                     xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 18 18"
                                     fill="currentColor"
@@ -141,7 +115,7 @@ const Sidebar = ({ onSelectView }) => {
                                 </svg>
                                 <span className="flex-1 ms-3 whitespace-nowrap">Kanban</span>
                                 <span
-                                    className="ms-3 inline-flex items-center justify-center px-2 text-sm font-medium text-gray-800 bg-gray-400 rounded-full dark:bg-gray-700 dark:text-gray-300">
+                                    className="inline-flex items-center justify-center px-2 text-sm font-medium text-gray-800 bg-gray-400 rounded-full ms-3 dark:bg-gray-700 dark:text-gray-300">
                   Pro
                 </span>
                             </a>
@@ -149,12 +123,12 @@ const Sidebar = ({ onSelectView }) => {
 
                         <li>
                             <a
-                                href="#"
+                                href="/"
                                 onClick={(e) => {
                                     e.preventDefault();
                                     handleSignOut();
                                 }}
-                                className="flex items-center gap-x-2 p-2 text-gray-900 rounded-lg bg-gray-400 dark:hover:bg-gray-700 group"
+                                className="flex items-center p-2 text-gray-900 bg-gray-400 rounded-lg gap-x-2 dark:hover:bg-gray-700 group"
                             >
                                 <svg
                                     className="w-5 h-5 text-gray-900"
@@ -188,7 +162,7 @@ const Sidebar = ({ onSelectView }) => {
                         <button disabled type="button"
                                 className="text-white bg-[#16056B] focus:ring-4  font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2  inline-flex items-center">
                             <svg aria-hidden="true" role="status"
-                                 className="inline w-4 h-4 me-3 text-white animate-spin" viewBox="0 0 100 101"
+                                 className="inline w-4 h-4 text-white me-3 animate-spin" viewBox="0 0 100 101"
                                  fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"

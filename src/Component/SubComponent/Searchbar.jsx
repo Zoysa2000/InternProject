@@ -1,10 +1,14 @@
 import React, { useState } from "react";
+import useDepartments from "./Department";
 
 export default function Searchbar({ onResults }) {
     const [id, setId] = useState("");
     const [dept, setDept] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+
+    const { departments, loading: deptLoading, error: deptError } = useDepartments();
+    const activeDepartments = departments.filter(d => d.isActive);
 
     const handleSearch = () => {
         const trimmedId = id.trim();
@@ -81,16 +85,18 @@ export default function Searchbar({ onResults }) {
             />
 
             <select
+                id="department"
                 value={dept}
                 onChange={(e) => setDept(e.target.value)}
-                className="block w-48 py-2 px-3 text-sm border rounded-lg bg-white"
+                disabled={deptLoading || activeDepartments.length === 0}
+                className="border rounded-lg py-2 px-3 text-sm bg-white"
             >
-                <option value="">All Departments</option>
-                <option value="HR">HR</option>
-                <option value="Sales">Sales</option>
-                <option value="Finance">Finance</option>
-                <option value="IT">IT</option>
-                <option value="Marketing">Marketing</option>
+                <option value="">Select Department</option>
+                {activeDepartments.map((d) => (
+                    <option key={d.deptId} value={d.deptName}>
+                        {d.deptName}
+                    </option>
+                ))}
             </select>
 
             <button
@@ -101,8 +107,10 @@ export default function Searchbar({ onResults }) {
                 {loading ? "Searching…" : "Search"}
             </button>
 
-            {error && (
-                <span className="text-red-600 text-sm ml-2">Error: {error}</span>
+            {(error || deptError) && (
+                <span className="text-red-600 text-sm ml-2">
+          Error: {error || deptError}
+        </span>
             )}
         </div>
     );

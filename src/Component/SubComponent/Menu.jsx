@@ -1,20 +1,21 @@
+
 import { useState, useEffect } from "react";
 
-function useDepartments() {
-    const [departments, setDepartments] = useState([]);
+export function useMenu() {
+    const [menu, setMenu] = useState([]);
     const [loading, setLoading]       = useState(true);
     const [error, setError]           = useState(null);
 
     useEffect(() => {
 
 
-        fetch("https://localhost:7068/api/Department")
+        fetch("https://localhost:7068/api/Manage")
             .then((res) => {
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 return res.json();
             })
             .then((data) => {
-                setDepartments(data);
+                setMenu(data);
                 setLoading(false);
             })
             .catch((err) => {
@@ -23,12 +24,8 @@ function useDepartments() {
                     setLoading(false);
                 }
             });
+}, []);
 
 
-    }, []);
-
-
-    return { departments, loading, error };
+    return { menu, loading, error };
 }
-
-export default useDepartments;

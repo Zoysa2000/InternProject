@@ -34,7 +34,7 @@ export default function EmployeeModal({ open, onClose, empId }) {
     if (loading)
         return (
             <Backdrop>
-                <div className="text-white text-lg">Loading…</div>
+                <div className="text-lg text-white">Loading…</div>
             </Backdrop>
         );
 
@@ -52,7 +52,7 @@ export default function EmployeeModal({ open, onClose, empId }) {
 
     return (
         <Backdrop>
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-md animate-fade-in scale-95 transform transition-all">
+            <div className="w-full max-w-md transition-all transform scale-95 bg-white shadow-xl dark:bg-gray-800 rounded-2xl animate-fade-in">
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -60,7 +60,7 @@ export default function EmployeeModal({ open, onClose, empId }) {
                     </h2>
                     <button
                         onClick={onClose}
-                        className="text-gray-400 hover:text-gray-600 dark:hover:text-white text-lg"
+                        className="text-lg text-gray-400 hover:text-gray-600 dark:hover:text-white"
                     >
                         ✕
                     </button>
@@ -74,10 +74,10 @@ export default function EmployeeModal({ open, onClose, empId }) {
                             <img
                                 src={employee.imageUrl}
                                 alt="Employee"
-                                className="h-28 w-28 rounded-full object-cover border-4 border-gray-200 dark:border-gray-600 shadow-md"
+                                className="object-cover border-4 border-gray-200 rounded-full shadow-md h-28 w-28 dark:border-gray-600"
                             />
                         ) : (
-                            <div className="h-28 w-28 rounded-full bg-gray-300 dark:bg-gray-700" />
+                            <div className="bg-gray-300 rounded-full h-28 w-28 dark:bg-gray-700" />
                         )}
                     </div>
 
@@ -86,6 +86,7 @@ export default function EmployeeModal({ open, onClose, empId }) {
                         <Detail label="First Name" value={employee.firstName} />
                         <Detail label="Last Name" value={employee.lastName} />
                         <Detail label="Department" value={employee.department} />
+                         <Detail label="Department ID" value={employee.deptId} />
                         <Detail label="Position" value={employee.position} />
                         <Detail label="Phone" value={employee.phone} />
                         <Detail label="Age" value={employee.age} />
@@ -98,10 +99,10 @@ export default function EmployeeModal({ open, onClose, empId }) {
                 </div>
 
                 {/* Footer */}
-                <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700 text-right">
+                <div className="px-6 py-4 text-right border-t border-gray-200 dark:border-gray-700">
                     <button
                         onClick={onClose}
-                        className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2 rounded-lg transition"
+                        className="px-5 py-2 text-sm font-medium text-white transition bg-blue-600 rounded-lg hover:bg-blue-700"
                     >
                         Close
                     </button>
@@ -120,7 +121,7 @@ const Backdrop = ({ children }) => (
 
 const Detail = ({ label, value }) => (
     <div>
-        <div className="text-xs font-semibold uppercase text-gray-500 dark:text-gray-400 mb-1">
+        <div className="mb-1 text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">
             {label}
         </div>
         <div className="text-sm font-medium">{value || "-"}</div>
