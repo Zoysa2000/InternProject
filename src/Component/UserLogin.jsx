@@ -54,14 +54,14 @@ const UserLogin = () => {
             />
 
 
-            <section className="bg-gray-50 dark:bg-gray-900 h-screen">
+            <section className="h-screen bg-gray-50 dark:bg-gray-900">
                 <ModeBtn />
                 <div className="flex items-center justify-center h-full px-4">
                     <div className="w-full bg-white rounded-lg shadow-xl dark:border sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                         <div className="p-6 space-y-4 sm:p-8">
                             <div className="text-center">
                                 <img
-                                    src="./logo.gif"
+                                    src="./logo.png"
                                     alt="Company Logo"
                                     className="mx-auto mb-4 w-25 h-25"
                                 />

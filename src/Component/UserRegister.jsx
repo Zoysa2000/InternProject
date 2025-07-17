@@ -89,13 +89,13 @@ const UserRegister = () => {
     };
 
     return (
-        <section className="bg-gray-50 dark:bg-gray-900 h-screen">
+        <section className="h-screen bg-gray-50 dark:bg-gray-900">
             <ModeBtn />
             <div className="flex items-center justify-center h-full px-4">
                 <div className="w-full bg-white rounded-lg shadow-xl dark:border sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                     <div className="p-6 space-y-2 sm:p-8">
                         <div className="text-center">
-                            <img src="./logo.gif" alt="Company Logo" className="mx-auto mb-2 w-25 h-25" />
+                            <img src="./logo.png" alt="Company Logo" className="mx-auto mb-2 w-25 h-25" />
                             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                                 Create User Account
                             </h1>
@@ -172,9 +172,7 @@ const UserRegister = () => {
                                     <input
                                         id="acceptTerms"
                                         type="checkbox"
-                                        className="w-4 h-4 border border-gray-300 rounded bg-gray-50
-                               focus:ring-3 focus:ring-blue-300 dark:bg-gray-700
-                               dark:border-gray-600 dark:focus:ring-blue-600"
+                                        className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600"
                                         checked={formData.acceptTerms}
                                         onChange={handleChange}
                                         disabled={loading}

@@ -158,8 +158,8 @@ export default function Updateform({ open = true, onClose = () => {}, employee, 
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div className="relative w-full max-w-md max-h-full p-5">
-                <div className="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+             <div className="max-h-[90vh] w-full max-w-md overflow-y-auto p-6 bg-white rounded shadow-lg dark:bg-gray-800">
+            
                     {/* Header */}
                     <div className="flex items-center justify-between p-4 border-b dark:border-gray-600">
                         <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -256,7 +256,8 @@ export default function Updateform({ open = true, onClose = () => {}, employee, 
                     </form>
                 </div>
             </div>
-        </div>
+       
+    
     );
 }
 
