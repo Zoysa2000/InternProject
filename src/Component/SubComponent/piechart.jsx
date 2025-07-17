@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Chart } from "react-google-charts";
 
 const Piechart = ({hr,it,finance,sales}) => {
@@ -12,8 +12,13 @@ const Piechart = ({hr,it,finance,sales}) => {
     ];
 
     const options = {
-        title: "Employees by Department",
-        pieHole: 0.4, // optional: donut style
+title: "Departments Distribution of Employees",
+titleTextStyle: {
+    color: "#808080",    
+    fontSize: 16,        
+         
+  },
+        pieHole: 0.4, 
         legend: { position: "right" },
         chartArea: { width: "90%", height: "80%" },
     };

@@ -102,7 +102,7 @@ export default function EmployeeModal({ open, onClose, empId }) {
                 <div className="px-6 py-4 text-right border-t border-gray-200 dark:border-gray-700">
                     <button
                         onClick={onClose}
-                        className="px-5 py-2 text-sm font-medium text-white transition bg-blue-600 rounded-lg hover:bg-blue-700"
+                        className="px-5 py-2 text-sm font-medium text-white transition bg-[#16056B]"
                     >
                         Close
                     </button>
