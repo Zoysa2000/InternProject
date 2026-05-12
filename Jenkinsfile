@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'thilina123/EmployeeMnagementSystem_FrontEnd'
+        DOCKER_IMAGE = 'thilina123/employee-management-system-frontend'
         DOCKER_TAG = "${BUILD_NUMBER}"
     }
 
