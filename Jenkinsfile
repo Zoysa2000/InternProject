@@ -38,4 +38,13 @@ pipeline {
             }
         }
     }
+
+    post {
+        success {
+            echo 'Docker image built and pushed successfully.'
+        }
+        failure {
+            echo 'Pipeline failed. Check Dockerfile, Docker permission, or Docker Hub credentials.'
+        }
+    }
 }
