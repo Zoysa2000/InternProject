@@ -17,9 +17,6 @@ pipeline {
                     steps {
                         sh '''
                             echo "Running on Built-In Jenkins Controller Node"
-                            whoami
-                            hostname
-                            pwd
                             docker --version || true
                         '''
                     }
@@ -33,10 +30,6 @@ pipeline {
                     steps {
                         sh '''
                             echo "Running on Docker Agent Node"
-                            whoami
-                            hostname
-                            pwd
-                            docker --version
                             docker ps
                         '''
                     }
@@ -44,7 +37,11 @@ pipeline {
             }
         }
 
-        stage('Checkout') {
+        stage('Parell run checkout and docker build')
+        {
+            parallel
+            {
+                stage('Checkout') {
             agent {
                 label 'controller'
             }
@@ -70,6 +67,13 @@ pipeline {
                 '''
             }
         }
+
+            }
+        }
+
+
+
+        
 
         stage('Push Docker Image') {
             agent {
