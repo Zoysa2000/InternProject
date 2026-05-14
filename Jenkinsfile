@@ -71,10 +71,6 @@ pipeline {
             }
         }
 
-
-
-        
-
         stage('Push Docker Image') {
             agent {
                 label 'docker'
