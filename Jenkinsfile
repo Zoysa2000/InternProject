@@ -10,9 +10,7 @@ pipeline {
         stage('Parallel Agent Test') {
             parallel {
                 stage('Run on Built-In Node') {
-                    agent {
-                        label 'controller'
-                    }
+                    agent { label 'controller' }
 
                     steps {
                         sh '''
@@ -22,9 +20,7 @@ pipeline {
                 }
 
                 stage('Run on Docker Agent') {
-                    agent {
-                        label 'docker'
-                    }
+                    agent { label 'docker' }
 
                     steps {
                         sh '''
@@ -35,14 +31,8 @@ pipeline {
             }
         }
 
-        stage('Parell run checkout and docker build')
-        {
-            parallel
-            {
-                stage('Checkout') {
-            agent {
-                label 'controller'
-            }
+        stage('Checkout Source Code') {
+            agent { label 'docker' }
 
             steps {
                 checkout scm
@@ -50,26 +40,19 @@ pipeline {
         }
 
         stage('Build Docker Image') {
-            agent {
-                label 'docker'
-            }
+            agent { label 'docker' }
 
             steps {
                 sh '''
-                    echo "Building Docker image on docker agent"
+                    echo "Building Docker image on Docker agent"
                     docker build -t $DOCKER_IMAGE:$DOCKER_TAG .
                     docker tag $DOCKER_IMAGE:$DOCKER_TAG $DOCKER_IMAGE:latest
                 '''
             }
         }
 
-            }
-        }
-
         stage('Push Docker Image') {
-            agent {
-                label 'docker'
-            }
+            agent { label 'docker' }
 
             steps {
                 withCredentials([usernamePassword(
@@ -86,15 +69,13 @@ pipeline {
                 }
             }
         }
-    }
-
 
         stage('Update Kubernetes Manifest for ArgoCD') {
-            agent {
-                label 'controller'
-            }
+            agent { label 'controller' }
 
             steps {
+                checkout scm
+
                 withCredentials([usernamePassword(
                     credentialsId: 'github-credentials',
                     usernameVariable: 'GIT_USERNAME',
@@ -106,7 +87,7 @@ pipeline {
                         git config user.name "thilina-dev"
                         git config user.email "thilinadezoysa2000@gmail.com"
 
-                        sed -i "s|image: $DOCKER_IMAGE:.*|image: $DOCKER_IMAGE:$DOCKER_TAG|g" k8/deployment.yaml
+                        sed -i "s|image: $DOCKER_IMAGE:.*|image: $DOCKER_IMAGE:$DOCKER_TAG|g" k8s/deployment.yaml
 
                         git status
                         git add k8s/deployment.yaml
@@ -117,7 +98,7 @@ pipeline {
                 }
             }
         }
-    
+    }
 
     post {
         success {
@@ -125,7 +106,7 @@ pipeline {
         }
 
         failure {
-            echo 'Pipeline failed. Check node labels, Docker permission, Dockerfile, or Docker Hub credentials.'
+            echo 'Pipeline failed. Check node labels, Docker permission, Dockerfile, Git permission, or credentials.'
         }
     }
 }
