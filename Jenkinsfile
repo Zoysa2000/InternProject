@@ -89,7 +89,7 @@ pipeline {
     }
 
 
-    stage('Update Kubernetes Manifest for ArgoCD') {
+        stage('Update Kubernetes Manifest for ArgoCD') {
             agent {
                 label 'controller'
             }
