@@ -1,0 +1,14 @@
+replicaCount: 2
+
+image:
+  repository: thilina123/employee-management-system-frontend
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: NodePort
+  port: 80
+  targetPort: 80
+  nodePort: 30080
+
+containerPort: 80
