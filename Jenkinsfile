@@ -87,13 +87,13 @@ pipeline {
                         git config user.name "thilina-dev"
                         git config user.email "thilinadezoysa2000@gmail.com"
 
-                        sed -i "s|image: $DOCKER_IMAGE:.*|image: $DOCKER_IMAGE:$DOCKER_TAG|g" k8s/deployment.yaml
+                       sed -i "s|tag: .*|tag: \"$DOCKER_TAG\"|g" helm/ems-frontend/values.yaml
 
-                        git status
-                        git add k8s/deployment.yaml
-                        git commit -m "Update frontend image to build $DOCKER_TAG" || echo "No changes to commit"
+                       git status
+                       git add helm/ems-frontend/values.yaml
+                       git commit -m "Update frontend image to build $DOCKER_TAG" || echo "No changes to commit"
 
-                        git push https://$GIT_USERNAME:$GIT_PASSWORD@github.com/Zoysa2000/InternProject.git HEAD:main
+                       git push https://$GIT_USERNAME:$GIT_PASSWORD@github.com/Zoysa2000/InternProject.git HEAD:main
                     '''
                 }
             }
