@@ -6,12 +6,14 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: ems-frontend               
+      app: ems-frontend
   template:
     metadata:
       labels:
         app: ems-frontend
     spec:
+      imagePullSecrets:
+        - name: dockerhub-secret
       containers:
         - name: ems-frontend
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
