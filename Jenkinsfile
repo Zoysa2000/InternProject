@@ -32,7 +32,7 @@ pipeline {
         }
 
         stage('Checkout Source Code') {
-            agent { label 'docker' }
+            agent { label 'controller' }
 
             steps {
                 checkout scm
@@ -40,7 +40,7 @@ pipeline {
         }
 
         stage('Build Docker Image') {
-            agent { label 'docker' }
+            agent { label 'controller' }
 
             steps {
                 sh '''
@@ -52,7 +52,7 @@ pipeline {
         }
 
         stage('Push Docker Image') {
-            agent { label 'docker' }
+            agent { label 'controller' }
 
             steps {
                 withCredentials([usernamePassword(
