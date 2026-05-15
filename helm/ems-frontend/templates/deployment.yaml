@@ -6,7 +6,7 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: ems-frontend
+      app: ems-frontend               
   template:
     metadata:
       labels:

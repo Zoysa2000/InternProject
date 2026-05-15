@@ -1,9 +1,9 @@
 replicaCount: 2
 
 image:
-  repository: thilina123/employee-management-system-frontend
+  repository: thilina123/employee-management-system-frontend    
   tag: latest
-  pullPolicy: Always
+  pullPolicy: dockerhub-secret
 
 service:
   type: NodePort
