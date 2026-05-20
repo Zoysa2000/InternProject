@@ -17,31 +17,31 @@ function Chart()  {
 
     useEffect(() => {
 
-        fetch("https://localhost:7068/api/count/employeeCount")
+        fetch("http://localhost:3000/api/count/employeeCount")
             .then(res => res.json())
             .then(data => setCount(data.count))
             .catch(err => setError("Failed to fetch employee count"));
 
 
-        fetch("https://localhost:7068/api/Count/employeeCountIT")
+        fetch("http://localhost:3000/api/Count/employeeCountIT")
             .then(res => res.json())
             .then(data => setCountIT(data.count))
             .catch(err => setError("Failed to fetch department count"));
 
 
-        fetch("https://localhost:7068/api/Count/employeeCountHR")
+        fetch("http://localhost:3000/api/Count/employeeCountHR")
             .then(res => res.json())
             .then(data => setCountHR(data.count))
             .catch(err => setError("Failed to fetch project count"));
 
 
-        fetch("https://localhost:7068/api/Count/employeeCountFinance")
+        fetch("http://localhost:3000/api/Count/employeeCountFinance")
             .then(res => res.json())
             .then(data => setCountFinance(data.count))
             .catch(err => setError("Failed to fetch vacancy count"));
 
 
-        fetch("https://localhost:7068/api/Count/employeeCountSales")
+        fetch("http://localhost:3000/api/Count/employeeCountSales")
             .then(res => res.json())
             .then(data => setCountSales(data.count))
             .catch(err => setError("Failed to fetch vacancy count"));

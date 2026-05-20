@@ -8,7 +8,7 @@ export function useMainMenu() {
     useEffect(() => {
 
 
-        fetch("https://localhost:7068/api/MainMenu")
+        fetch("http://localhost:3000/api/MainMenu")
             .then((res) => {
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 return res.json();

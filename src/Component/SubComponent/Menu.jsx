@@ -9,7 +9,7 @@ export function useMenu() {
     useEffect(() => {
 
 
-        fetch("https://localhost:7068/api/Manage")
+        fetch("http://localhost:3000/api/Manage")
             .then((res) => {
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 return res.json();

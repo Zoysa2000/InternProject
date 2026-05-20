@@ -34,7 +34,7 @@ export default function Searchbar({ onResults }) {
 
     const fetchDept = async (department) => {
         try {
-            const res = await fetch(`https://localhost:7068/api/Employees/byDepartment/${department}`);
+            const res = await fetch(`http://localhost:3000/api/Employees/byDepartment/${department}`);
             if (!res.ok) throw new Error(await res.text());
             const data = await res.json();
             onResults(data);

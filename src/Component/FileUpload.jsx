@@ -98,7 +98,7 @@ export default function FileUpload() {
       });
 
       try {
-        const response = await fetch('https://localhost:7068/api/Contribution/upload', {
+        const response = await fetch('http://localhost:3000/api/Contribution/upload', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(jsonData),
