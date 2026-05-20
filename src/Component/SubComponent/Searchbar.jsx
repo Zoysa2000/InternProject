@@ -48,7 +48,7 @@ export default function Searchbar({ onResults }) {
 
     const fetchId = async (empId) => {
         try {
-            const res = await fetch(`https://localhost:7068/api/Employees/${empId}`);
+            const res = await fetch(`http://localhost:3000/api/Employees/${empId}`);
             if (!res.ok) throw new Error(await res.text());
             const data = await res.json();
             onResults(data ? [data] : []);
@@ -62,7 +62,7 @@ export default function Searchbar({ onResults }) {
 
     const fetchByDeptAndId = async (department, empId) => {
         try {
-            const res = await fetch(`https://localhost:7068/api/Employees/${department}/${empId}`);
+            const res = await fetch(`http://localhost:3000/api/Employees/${department}/${empId}`);
             if (!res.ok) throw new Error(await res.text());
             const data = await res.json();
             onResults(data ? [data] : []);
