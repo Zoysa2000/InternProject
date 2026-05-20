@@ -10,7 +10,7 @@ export default function EmployeeModal({ open, onClose, empId }) {
         if (!open || !empId) return;
 
         setLoading(true);
-        fetch(`https://localhost:7068/api/Employees/${empId}`)
+        fetch(`http://localhost:3000/api/Employees/${empId}`)
             .then(async (res) => {
                 if (!res.ok) {
                     const err = await res.json();

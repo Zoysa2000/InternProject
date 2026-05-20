@@ -61,7 +61,7 @@ export default function AddUser() {
             const formImage = new FormData();
             formImage.append('image', imageFile);
 
-            const uploadRes = await fetch("https://localhost:7068/api/Employees/uploadImage", {
+            const uploadRes = await fetch("http://localhost:3000/api/Employees/uploadImage", {
                 method: "POST",
                 body: formImage
             });

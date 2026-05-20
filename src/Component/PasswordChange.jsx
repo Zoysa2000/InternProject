@@ -25,7 +25,7 @@ const PasswordChange = ({ open, onClose }) => {
 
         try {
             const response = await fetch(
-                "https://localhost:7068/api/UserPasswordChange/reset-password",
+                "http://localhost:3000/api/UserPasswordChange/reset-password",
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },

@@ -35,7 +35,7 @@ export default function Updateform({ open = true, onClose = () => {}, employee, 
 
         setLoading(true);
         setError("");
-        fetch(`https://localhost:7068/api/Employees/getEmployeeDetails/${employee}`)
+        fetch(`http://localhost:3000/api/Employees/getEmployeeDetails/${employee}`)
             .then((r) => (r.ok ? r.json() : Promise.reject("Unable to fetch employee")))
             .then((data) => {
                 setFormData({
@@ -82,7 +82,7 @@ export default function Updateform({ open = true, onClose = () => {}, employee, 
                 formImg.append("image", imageFile);
 
                 const upRes = await fetch(
-                    "https://localhost:7068/api/Employees/uploadNewImage",
+                    "http://localhost:3000/api/Employees/uploadNewImage",
                     { method: "POST", body: formImg }
                 );
 
@@ -104,7 +104,7 @@ export default function Updateform({ open = true, onClose = () => {}, employee, 
             };
 
             const saveRes = await fetch(
-                `https://localhost:7068/api/Employees/updateEmployee/${employee}`,
+                `http://localhost:3000/api/Employees/updateEmployee/${employee}`,
                 {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
@@ -133,7 +133,7 @@ export default function Updateform({ open = true, onClose = () => {}, employee, 
             setLoading(true);
 
             const res = await fetch(
-                `https://localhost:7068/api/Employees/deleteEmployee/${department}/${employee}`,
+                `http://localhost:3000/api/Employees/deleteEmployee/${department}/${employee}`,
                 { method: "DELETE" }
             );
 

@@ -12,7 +12,7 @@ export default function UserTable() {
     const rowsPerPage = 3;
 
     useEffect(() => {
-        fetch("https://localhost:7068/api/Employees/getEmployee")
+        fetch("http://localhost:3000/api/Employees/getEmployee")
             .then(async (res) => {
                 if (!res.ok) {
                     const err = await res.json();
