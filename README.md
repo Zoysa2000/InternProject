@@ -45,9 +45,3 @@ Helm chart is used for Kubernetes deployment
 Frontend Pods run in Kubernetes
    ↓
 User accesses frontend through NodePort
-
----
-## System Architecture
-
-<img width="1536" height="1024" alt="6fbeb40a-d168-4bd3-ab41-b9414b38751f" src="https://github.com/user-attachments/assets/d8a3abea-d692-413e-96f5-866a151e12da" />
-
