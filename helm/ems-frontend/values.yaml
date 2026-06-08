@@ -2,7 +2,7 @@ replicaCount: 2
 
 image:
   repository: thilina123/employee-management-system-frontend
-  tag: 72
+  tag: 73
   pullPolicy: Always
 
 imagePullSecrets:
